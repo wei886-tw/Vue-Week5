@@ -1,8 +1,6 @@
-let productModal = null;
-let delProductModal = ``;
-
-import pagination from './pagination.js'
-
+import pagination from './pagination.js';
+// import delProductModal from './delProductModal.js';
+import productModal from './productModal.js';
 
 const { createApp } = Vue;
 const app = createApp({
@@ -19,9 +17,11 @@ const app = createApp({
       pagination: {},
     };
   },
-  
-  components:{
-    pagination
+
+  components: {
+    pagination,
+    // delProductModal,
+    productModal,
   },
 
   methods: {
@@ -31,18 +31,19 @@ const app = createApp({
           imagesUrl: [],
         };
         this.isNew = true;
-        productModal.show();
+        this.$refs.pModal.openModal();
       }
 
       else if (status === 'edit') {
         this.tempProduct = { ...product };
         this.new = false;
-        productModal.show();
+        this.$refs.pModal.openModal();
+
       }
 
       else if (status === 'delete') {
         this.tempProduct = { ...product };
-        delProductModal.show();
+        // delProductModal.show();
       }
     },
     getProducts(page = 1) {
@@ -72,7 +73,8 @@ const app = createApp({
       if (this.isNew == true) {
         axios.post(`${this.url}/v2/api/${this.api_path}/admin/product`, { data: this.tempProduct })
           .then(res => {
-            productModal.hide();
+            this.$refs.pModal.closeModal();
+
             alert("新增產品成功");
             this.isNew = false;
             this.tempProduct = {};
@@ -80,19 +82,19 @@ const app = createApp({
 
           })
           .catch(err => {
-            alert(err.data.message)
+            alert(err.data.message);
           });
       }
       else if (this.isNew == false) {
         axios.put(`${this.url}/v2/api/${this.api_path}/admin/product/${this.tempProduct.id}`, { data: this.tempProduct })
           .then(res => {
-            productModal.hide();
+            // productModal.hide();
             alert("編輯產品成功");
             this.getProducts();
             this.tempProduct = {};
           })
           .catch(err => {
-            alert(err.data.message)
+            alert(err.data.message);
           });
       };
     },
@@ -120,11 +122,6 @@ const app = createApp({
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
     axios.defaults.headers.common.Authorization = token;
     this.checkAdmin();
-
-    productModal = new bootstrap.Modal(document.getElementById('productModal'), {
-      keyboard: false,
-      backdrop: 'static'
-    });
 
     delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'), {
       keyboard: false,
