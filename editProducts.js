@@ -1,6 +1,8 @@
 let productModal = null;
 let delProductModal = ``;
 
+import pagination from './pagination.js'
+
 
 const { createApp } = Vue;
 const app = createApp({
@@ -14,7 +16,12 @@ const app = createApp({
         imageUrl: [],
         imagesUrl: [],
       },
+      pagination: {},
     };
+  },
+  
+  components:{
+    pagination
   },
 
   methods: {
@@ -38,10 +45,11 @@ const app = createApp({
         delProductModal.show();
       }
     },
-    getProducts() {
-      axios.get(`${this.url}/v2/api/${this.api_path}/admin/products`)
+    getProducts(page = 1) {
+      axios.get(`${this.url}/v2/api/${this.api_path}/admin/products?page=${page}`)
         .then(res => {
           this.allProducts = res.data.products;
+          this.pagination = res.data.pagination;
         })
 
         .catch(err => {
