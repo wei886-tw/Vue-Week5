@@ -1,21 +1,29 @@
 export default{
-  props: ['updateProduct', 'tempProduct'],
+  props: ['tempProduct', 'updateProduct'],
   data(){
     return{
-      productsModal: null,
+      bsModal: '',
     }
   },
 
   methods: {
     openModal(){
-      this.productModal.show()
+      this.bsModal.show()
     },
+
     closeModal(){
-      this.productModal.hide()
+      this.bsModal.hide()
     }
   },
 
-  template: `<div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
+  mounted(){
+    this.bsModal = new bootstrap.Modal(this.$refs.productModal,   {
+      keyboard: false,
+      backdrop: 'static'
+    })
+  },
+
+  template: ` <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
@@ -131,13 +139,5 @@ export default{
       </div>
   </div>
 </div>`,
-
-  mounted(){
-    this.productModal = new bootstrap.Modal(document.getElementById('productModal'), {
-      keyboard: false,
-      backdrop: 'static'
-    });
-
-  }
 
 }

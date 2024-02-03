@@ -1,6 +1,6 @@
-import pagination from './pagination.js';
-// import delProductModal from './delProductModal.js';
-import productModal from './productModal.js';
+import pagination from "./pagination.js";
+import productModal from "./productModal.js";
+import delProductModal from "./delProductModal.js";
 
 const { createApp } = Vue;
 const app = createApp({
@@ -14,14 +14,14 @@ const app = createApp({
         imageUrl: [],
         imagesUrl: [],
       },
-      pagination: {},
+      pages: {},
     };
   },
 
   components: {
     pagination,
-    // delProductModal,
     productModal,
+    delProductModal
   },
 
   methods: {
@@ -31,26 +31,25 @@ const app = createApp({
           imagesUrl: [],
         };
         this.isNew = true;
-        this.$refs.pModal.openModal();
-      }
+        this.$refs.pModal.openModal()
+        }
 
       else if (status === 'edit') {
         this.tempProduct = { ...product };
         this.new = false;
-        this.$refs.pModal.openModal();
-
+        this.$refs.pModal.openModal()
       }
 
       else if (status === 'delete') {
         this.tempProduct = { ...product };
-        // delProductModal.show();
+        this.$refs.dModal.openModal()
       }
     },
     getProducts(page = 1) {
       axios.get(`${this.url}/v2/api/${this.api_path}/admin/products?page=${page}`)
         .then(res => {
           this.allProducts = res.data.products;
-          this.pagination = res.data.pagination;
+          this.pages = res.data.pagination;
         })
 
         .catch(err => {
@@ -61,7 +60,7 @@ const app = createApp({
     delProduct() {
       axios.delete(`${this.url}/v2/api/${this.api_path}/admin/product/${this.tempProduct.id}`)
         .then(res => {
-          delProductModal.hide();
+          this.$refs.dModal.closeModal()
           this.getProducts();
         })
         .catch(err => {
@@ -73,8 +72,7 @@ const app = createApp({
       if (this.isNew == true) {
         axios.post(`${this.url}/v2/api/${this.api_path}/admin/product`, { data: this.tempProduct })
           .then(res => {
-            this.$refs.pModal.closeModal();
-
+            this.$refs.pModal.closeModal()
             alert("新增產品成功");
             this.isNew = false;
             this.tempProduct = {};
@@ -88,7 +86,7 @@ const app = createApp({
       else if (this.isNew == false) {
         axios.put(`${this.url}/v2/api/${this.api_path}/admin/product/${this.tempProduct.id}`, { data: this.tempProduct })
           .then(res => {
-            // productModal.hide();
+            this.$refs.pModal.closeModal()
             alert("編輯產品成功");
             this.getProducts();
             this.tempProduct = {};
@@ -99,9 +97,6 @@ const app = createApp({
       };
     },
 
-    addImg() {
-      this.imagesUrl;
-    },
 
     checkAdmin() {
       const link = `${this.url}/api/user/check`;
@@ -122,11 +117,6 @@ const app = createApp({
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
     axios.defaults.headers.common.Authorization = token;
     this.checkAdmin();
-
-    delProductModal = new bootstrap.Modal(document.getElementById('delProductModal'), {
-      keyboard: false,
-      backdrop: 'static'
-    });
   }
 });
 

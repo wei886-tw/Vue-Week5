@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div id="app" >
+    <div id="app">
         <div class="container">
             <div class="text-end mt-4">
                 <button class="btn btn-primary" @click="openModal('new')">
@@ -23,7 +23,7 @@
             <table class="table mt-4">
                 <!-- <pre>
                 {{tempProduct}}
-              </pre> -->
+            </pre> -->
                 <thead>
                     <tr>
                         <th width="120">
@@ -69,13 +69,14 @@
                     </tr>
                 </tbody>
             </table>
-
-            <pagination :pagination="pagination" :get-products="getProducts"></pagination>
+            <pagination :pages="pages" :get-products="getProducts"></pagination>
         </div>
 
+
         <!-- Modal -->
-        <product-modal :temp-product="tempProduct" :update-product='updateProduct' ref="pModal"></product-modal>
-        <!-- <del-product-modal :opn-modal="openModal" :del-product="delProduct"></del-product-modal> -->
+        <product-modal :temp-product="tempProduct" :update-product="updateProduct" ref="pModal"></product-modal>
+
+        <del-product-modal :del-product="delProduct" :temp-product="tempProduct" ref="dModal"></del-product-modal>
         <!-- Modal -->
     </div>
 
@@ -92,4 +93,4 @@
     <script src="editProducts.js" type="module"></script>
 </body>
 
-</html>;
+</html>

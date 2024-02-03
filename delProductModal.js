@@ -1,5 +1,28 @@
 export default{
-  props: ['delProduct', 'openModal', 'delProductModal'],
+  props: ['delProduct', 'tempProduct'],
+  data(){
+    return{
+      delProductModal : '',
+    }
+  },
+
+  methods: {
+    openModal(){
+      this.delProductModal.show()
+    },
+
+    closeModal(){
+      this.delProductModal.hide()
+    }
+  },
+
+  mounted(){
+    this.delProductModal = new bootstrap.Modal((this.$refs.delProductModal), {
+      keyboard: false,
+      backdrop: 'static'
+    });
+  },
+
   template: `<div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
   aria-labelledby="delProductModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -24,5 +47,6 @@ export default{
           </div>
       </div>
   </div>
-</div> `,
+</div>`,
+
 }
