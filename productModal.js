@@ -1,35 +1,36 @@
-export default{
-  props: ['tempProduct', 'updateProduct'],
-  data(){
-    return{
-      bsModal: '',
-    }
-  },
+export default {
+	props: [ 'tempProduct', 'updateProduct', 'isNew'],
+	data() {
+		return {
+			bsModal: '',
+		};
+	},
 
-  methods: {
-    openModal(){
-      this.bsModal.show()
-    },
+	methods: {
+		openModal() {
+			this.bsModal.show();
+		},
 
-    closeModal(){
-      this.bsModal.hide()
-    }
-  },
+		closeModal() {
+			this.bsModal.hide();
+		}
+	},
 
-  mounted(){
-    this.bsModal = new bootstrap.Modal(this.$refs.productModal,   {
-      keyboard: false,
-      backdrop: 'static'
-    })
-  },
+	mounted() {
+		this.bsModal = new bootstrap.Modal(this.$refs.productModal, {
+			keyboard: false,
+			backdrop: 'static'
+		});
+	},
 
-  template: ` <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
+	template: ` <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
               <h5 id="productModalLabel" class="modal-title">
-                  <span>新增產品</span>
+									<span v-if="isNew == true">新增產品</span>
+                  <span v-else>編輯產品</span>
               </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -46,7 +47,6 @@ export default{
                       </div>
                       <div>
                           <h4>多圖設置</h4>
-                          <!-- 判斷 tempProduct.imagesUrl 是個陣列 -->
                           <div v-if="Array.isArray(tempProduct.imagesUrl)">
                               <div v-for="(img, key) in tempProduct.imagesUrl" :key="key + 123">
                                   <img :src="img" alt="">
@@ -86,7 +86,7 @@ export default{
                                   v-model="tempProduct.category">
                           </div>
                           <div class="mb-3 col-md-6">
-                              <label for="price" class="form-label">單位</label>
+                              <label for="unit" class="form-label">單位</label>
                               <input id="unit" type="text" class="form-control" placeholder="請輸入單位"
                                   v-model="tempProduct.unit">
                           </div>
@@ -96,12 +96,12 @@ export default{
                           <div class="mb-3 col-md-6">
                               <label for="origin_price" class="form-label">原價</label>
                               <input id="origin_price" type="number" min="0" class="form-control"
-                                  placeholder="請輸入原價" v-model="tempProduct.origin_price">
+                                  placeholder="請輸入原價" v-model.number="tempProduct.origin_price">
                           </div>
                           <div class="mb-3 col-md-6">
                               <label for="price" class="form-label">售價</label>
                               <input id="price" type="number" min="0" class="form-control" placeholder="請輸入售價"
-                                  v-model="tempProduct.price">
+                                  v-model.number="tempProduct.price">
                           </div>
                       </div>
                       <hr>
@@ -114,7 +114,7 @@ export default{
                       </div>
                       <div class="mb-3">
                           <label for="content" class="form-label">說明內容</label>
-                          <textarea id="description" type="text" class="form-control" placeholder="請輸入說明內容"
+                          <textarea id="content" type="text" class="form-control" placeholder="請輸入說明內容"
                               v-model="tempProduct.content">
           </textarea>
                       </div>
@@ -140,4 +140,4 @@ export default{
   </div>
 </div>`,
 
-}
+};

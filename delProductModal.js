@@ -35,7 +35,7 @@ export default{
           </div>
           <div class="modal-body">
               是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+              <strong class="text-danger">刪除產品</strong> 商品(刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
