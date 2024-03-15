@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "vue-loading-overlay": "^6.0.4"
+  }
+}
